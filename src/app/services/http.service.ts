@@ -8,7 +8,8 @@ export class HttpService {
     constructor(private http: Http) {
     }
 
-    getData() {
-        return this.http.get('http://localhost:8080/kind');
+    getCoffeeKinds() {
+        // return this.http.get('http://localhost:8080/kind');
+        return this.http.get('coffee.json');
     }
 }
