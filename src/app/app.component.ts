@@ -1,12 +1,18 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {HttpService} from './services/http.service';
 import {CoffeeKind} from './factory/coffee.factory';
-import {NameComponent} from './app.name';
 import {ModalDirective} from 'ngx-bootstrap';
+import {AppSettings} from './app.settings';
 
 @Component({
     selector: 'app-root',
     template: `
+        <div>
+            <p>Поиск по названию и описанию</p>
+            <input type="text" [(ngModel)]="request" (click)="refresh(request)"/>
+            <button (click)="refresh(request)">Поиск</button>
+        </div>
+        <br>
         <button (click)="refresh()">Получить список сортов кофе</button>
         <div [hidden]="!(coffeeKinds.length > 0)">
             <table>
@@ -27,37 +33,51 @@ import {ModalDirective} from 'ngx-bootstrap';
                 </tr>
             </table>
         </div>
-        <div [hidden]="!name">
-            <p>Ваше имя: {{name}}</p>
+        <div [hidden]="!userName">
+            <p>Ваше имя: {{userName}}</p>
         </div>
         <div [hidden]="!address">
             <p>Ваш адрес: {{address}}</p>
         </div>
         <button [disabled]="hidden">Сделать заказ</button>
-        <button>Введите свое имя и адрес</button>
-        <div bsModal #myModal="bs-modal" class="modal fade" >
+        <button (click)="openModal()">Введите свое имя и адрес</button>
+        <div bsModal #modalWindow="bs-modal" class="modal fade">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title pull-left">My modal</h4>
-                        <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+                        <h4 class="modal-title pull-left">Форма ввода данных клиента</h4>
+                        <button type="button" class="close pull-right" (click)="modalWindow.hide()" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        ...
+                        <div>
+                            <p>Введите свое имя</p>
+                            <input type="text" [(ngModel)]="userName"/>
+                            <div [hidden]="checkString(userName)">
+                                <td>Введено некорректное значение</td>
+                            </div>
+                            <p>Введите свой адрес</p>
+                            <input type="text" [(ngModel)]="address"/>
+                            <div [hidden]="checkString(address)">
+                                <div [hidden]="checkString(address)">
+                                    <td>Введено некорректное значение</td>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     `,
     styleUrls: ['./app.component.css'],
-    providers: [HttpService, NameComponent]
+    providers: [HttpService, ModalDirective]
 })
 export class AppComponent implements OnInit {
-    @ViewChild('myModal') private myModal: ModalDirective;
+    @ViewChild('modalWindow') private modalWindow: ModalDirective;
     hidden = false;
-    name;
+    request;
+    userName;
     address;
     coffeeKinds: CoffeeKind[] = [];
 
@@ -67,8 +87,8 @@ export class AppComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    refresh(): void {
-        this.httpService.getCoffeeKinds().subscribe((data) => this.coffeeKinds = data);
+    refresh(param: string): void {
+        this.httpService.getCoffeeKinds(AppSettings.URL_KINDS, param).subscribe((data) => this.coffeeKinds = data);
     }
 
     checkInput(value: any): boolean {
@@ -77,5 +97,13 @@ export class AppComponent implements OnInit {
         } else {
             return true;
         }
+    }
+
+    checkString(value: string): boolean {
+        return value === undefined || value.length > 5;
+    }
+
+    openModal() {
+        this.modalWindow.show();
     }
 }
