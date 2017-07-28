@@ -19,11 +19,11 @@ export class HttpService {
     }
 
     public getCoffeeKinds(url: string, param: string) {
-        const params: URLSearchParams = new URLSearchParams();
         if (param !== undefined) {
-            params.set('search', param);
+            url = url + param;
         }
-        return this.http.get(url, params)
+        console.log(param);
+        return this.http.get(url)
             .map(response => {
                 return <any[]>response.json();
             })

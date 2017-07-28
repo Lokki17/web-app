@@ -9,8 +9,8 @@ import {AppSettings} from './app.settings';
     template: `
         <div>
             <p>Поиск по названию и описанию</p>
-            <input type="text" [(ngModel)]="request" (click)="refresh(request)"/>
-            <button (click)="refresh(request)">Поиск</button>
+            <input type="text" [(ngModel)]="request"/>
+            <button (click)="refresh(request, '?key=')">Поиск</button>
         </div>
         <br>
         <button (click)="refresh()">Получить список сортов кофе</button>
@@ -87,7 +87,10 @@ export class AppComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    refresh(param: string): void {
+    refresh(param: string, key: string): void {
+        if (param !== undefined) {
+            param = key + param;
+        }
         this.httpService.getCoffeeKinds(AppSettings.URL_KINDS, param).subscribe((data) => this.coffeeKinds = data);
     }
 
