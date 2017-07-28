@@ -4,13 +4,14 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import {HttpModule} from '@angular/http';
 import {FormsModule} from '@angular/forms';
+import {ModalModule} from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule, HttpModule, FormsModule
+    BrowserModule, HttpModule, FormsModule, ModalModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],

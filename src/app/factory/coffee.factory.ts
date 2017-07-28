@@ -1,8 +1,7 @@
 export class CoffeeKind {
-
-    constructor(private id: number,
-                private name: string,
-                private description: string,
-                private price: number) {
-    }
+    id: number;
+    name: string;
+    description: string;
+    price: number;
+    count: number;
 }
