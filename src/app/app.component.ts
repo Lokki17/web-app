@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {HttpService} from './services/http.service';
-import {CoffeeKind} from './factory/coffee.factory';
+import {CoffeeCup, CoffeeKind, Order} from './factory/coffee.factory';
 import {ModalDirective} from 'ngx-bootstrap';
 import {AppSettings} from './app.settings';
 
@@ -39,7 +39,9 @@ import {AppSettings} from './app.settings';
         <div [hidden]="!address">
             <p>Ваш адрес: {{address}}</p>
         </div>
-        <button [disabled]="hidden">Сделать заказ</button>
+        <div [hidden]="!address || !userName">
+            <button (click)="createOrder()">Сделать заказ</button>
+        </div>
         <button (click)="openModal()">Введите свое имя и адрес</button>
         <div bsModal #modalWindow="bs-modal" class="modal fade">
             <div class="modal-dialog modal-lg">
@@ -80,6 +82,7 @@ export class AppComponent implements OnInit {
     userName;
     address;
     coffeeKinds: CoffeeKind[] = [];
+    coffeeCups: CoffeeCup[] = [];
 
     constructor(private httpService: HttpService) {
     }
@@ -91,7 +94,17 @@ export class AppComponent implements OnInit {
         if (param !== undefined) {
             param = key + param;
         }
-        this.httpService.getCoffeeKinds(AppSettings.URL_KINDS, param).subscribe((data) => this.coffeeKinds = data);
+        this.httpService.sendGet(AppSettings.URL_KINDS, param).subscribe((data) => this.coffeeKinds = data);
+    }
+
+    createOrder(): void {
+        console.log(AppSettings.URL_ORDERS);
+        for (const kind of this.coffeeKinds) {
+            if (kind.count) {
+                this.coffeeCups.push(new CoffeeCup(kind.name, kind.count));
+            }
+        }
+        this.httpService.sendPost(AppSettings.URL_ORDERS, new Order(this.userName, this.address, this.coffeeCups));
     }
 
     checkInput(value: any): boolean {
