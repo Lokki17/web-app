@@ -9,12 +9,13 @@ export class CoffeeKind {
 export class Order {
     userName: string;
     address: string;
-    coffeeCups: CoffeeCup[];
+    cups: CoffeeCup[];
+    price: number;
 
     constructor(userName: string, address: string, coffeeCups: CoffeeCup[]) {
         this.userName = userName;
         this.address = address;
-        this.coffeeCups = coffeeCups;
+        this.cups = coffeeCups;
     }
 }
 

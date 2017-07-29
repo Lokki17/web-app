@@ -1,7 +1,7 @@
 
 
 import {Injectable} from '@angular/core';
-import {Http} from '@angular/http';
+import {Http, Response} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 
 import 'rxjs/add/operator/map';
@@ -18,7 +18,6 @@ export class HttpService {
         if (param !== undefined) {
             url = url + param;
         }
-        console.log(param);
         return this.http.get(url)
             .map(response => {
                 return <any[]>response.json();
@@ -28,38 +27,28 @@ export class HttpService {
             });
     }
 
-    sendPost(query: string, data: any, headersValue?: any): Observable<any> {
-        console.log('QUERY');
-        console.log(data.coffeeCups.length);
-        console.log(data.coffeeCups[0].coffeeKind);
-        console.log(data.coffeeCups[0].count);
-        console.log(data.coffeeCups[1].coffeeKind);
-        console.log(data.coffeeCups[1].count);
-        console.log(data.coffeeCups[2].coffeeKind);
-        console.log(data.coffeeCups[2].count);
-        console.log(data.coffeeCups[3].coffeeKind);
-        console.log(data.coffeeCups[3].count);
-        console.log(data.coffeeCups[4].coffeeKind);
-        console.log(data.coffeeCups[4].count);
-        console.log(data.userName);
-        console.log(data.address);
+    sendPost(query: string, data: any): Observable<any> {
         this.error = {};
-        console.log('POST');
-        return this.http.post(query, data).map(() => this.extractData).catch((error) => {
-            console.log('lambda');
+        return this.http.post(query, data).map(this.extractData).catch((error) => {
             return this.handleError(error);
         });
     }
-
     private extractData(res: Response | any) {
         const body = res.json();
         return body || {};
     }
 
     private handleError(error: any) {
-        console.error(error);
         return Observable.throw(error);
     }
+
+    // рабочий
+    // sendPost(query: string, data: any) {
+    //     let headers = new Headers({ 'Content-Type': 'application/json' });
+    //     let options = new RequestOptions({ headers: headers });
+    //     this.error = {};
+    //     return this.http.post(query, data, options).map(res => this.extractData(res)).subscribe(d => console.log(d));
+    // }
 
 
 }
