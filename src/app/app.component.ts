@@ -147,7 +147,7 @@ export class AppComponent implements OnInit {
     }
 
     private closeModal() {
-        this.modalType = this.address;
+        this.modalType = this.mAddress;
         this.order = undefined;
         this.modalWindow.hide();
     }
