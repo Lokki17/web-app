@@ -21,6 +21,7 @@ export class AppComponent implements OnInit {
     mAddress = 'address';
     mOrder = 'order';
     mError = 'error';
+    hidden = false;
 
     constructor(private httpService: HttpService) {
     }
@@ -56,8 +57,10 @@ export class AppComponent implements OnInit {
 
     checkInput(value: any): boolean {
         if (value.count !== undefined && (value.count < 0 || value.count % 1 !== 0)) {
+            this.hidden = false;
             return false;
         } else {
+            this.hidden = true;
             return true;
         }
     }

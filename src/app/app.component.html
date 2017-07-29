@@ -26,10 +26,7 @@
                         <td>{{kind.id}}</td>
                         <td>{{kind.name}}</td>
                         <td>{{kind.price}}</td>
-                        <td><input type="number" required [(ngModel)]="kind.count"></td>
-                        <div [hidden]="checkInput(kind)">
-                            <td>Введено некорректное значение</td>
-                        </div>
+                        <td><input type="number" required [(ngModel)]="kind.count" [ngClass]="{'error': !checkInput(kind)}"></td>
                     </tr>
                     </tbody>
                 </table>
