@@ -17,6 +17,7 @@
                     <tr>
                         <th>Id</th>
                         <th>Наименование</th>
+                        <th>Описание</th>
                         <th>Цена</th>
                         <th>Количество</th>
                     </tr>
@@ -25,6 +26,7 @@
                     <tr *ngFor="let kind of coffeeKinds">
                         <td>{{kind.id}}</td>
                         <td>{{kind.name}}</td>
+                        <td>{{kind.description}}</td>
                         <td>{{kind.price}}</td>
                         <td><input type="number" required [(ngModel)]="kind.count" [ngClass]="{'error': !checkInput(kind)}"></td>
                     </tr>
@@ -41,8 +43,8 @@
         <p>по адресу {{address}}</p>
     </div>
     <div [hidden]="!address || !userName">
-        <br>
         <button class="btn btn-default btn-sm" (click)="createOrder()">Сделать заказ</button>
+        <br>
     </div>
     <button class="btn btn-default btn-sm" (click)="openModal()">Введите свое имя и адрес</button>
     <div bsModal #modalWindow="bs-modal" class="modal fade" (onHidden)="closeModal()">
